@@ -31,7 +31,7 @@ public class CatalogResource {
 //                new Rating("1234", 8),
 //                new Rating("5678", 9)
 //        );
-        UserRating ratings = restTemplate.getForObject("http://localhost:8083/ratingdata/users/" + userId, UserRating.class);
+        UserRating ratings = restTemplate.getForObject("http://Rating-Data-Service/ratingdata/users/" + userId, UserRating.class);
 
 
 
@@ -40,8 +40,8 @@ public class CatalogResource {
         return ratings.getUserRating()
                 .stream()
                 .map(rating -> {
-                    Movie movie = restTemplate.getForObject("http://localhost:8082/movies/" + rating.getMovieId(), Movie.class);
-                    return new CatalogItem(movie.getName(), "Test Description", rating.getRating());
+                    Movie movie = restTemplate.getForObject("http://Movie-Info-Service/movies/" + rating.getMovieId(), Movie.class);
+                    return new CatalogItem(movie.getName(), movie.getDescription(), rating.getRating());
                 })
                 .collect(Collectors.toList());
 

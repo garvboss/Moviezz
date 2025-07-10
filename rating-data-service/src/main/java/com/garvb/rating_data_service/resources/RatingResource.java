@@ -20,6 +20,8 @@ public class RatingResource {
 
     @RequestMapping("/users/{userId}")
     public UserRating getUserRatings(@PathVariable("userId") String userId) {
+        // Hard Coded these 2 movieId with rating
+        // So for every user we get these two movies only rated by user
         List<Rating> ratings = Arrays.asList(
                 new Rating("1234", 8),
                 new Rating("5678", 9)

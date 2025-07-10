@@ -3,6 +3,7 @@ package com.garvb.movie_catalog_service.resources;
 import com.garvb.movie_catalog_service.models.CatalogItem;
 import com.garvb.movie_catalog_service.models.Movie;
 import com.garvb.movie_catalog_service.models.Rating;
+import com.garvb.movie_catalog_service.models.UserRating;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,16 +27,18 @@ public class CatalogResource {
 
         // 1. Get movieId with rating from rating-data-service
         // HardCoding for now
-        List<Rating> ratings = Arrays.asList(
-                new Rating("1234", 8),
-                new Rating("5678", 9)
-        );
+//        List<Rating> ratings = Arrays.asList(
+//                new Rating("1234", 8),
+//                new Rating("5678", 9)
+//        );
+        UserRating ratings = restTemplate.getForObject("http://localhost:8083/ratingdata/users/" + userId, UserRating.class);
 
 
 
         // 2. Get movies details of all movie ids we get from rating-data-service
         // HardCoding for now
-        return ratings.stream()
+        return ratings.getUserRating()
+                .stream()
                 .map(rating -> {
                     Movie movie = restTemplate.getForObject("http://localhost:8082/movies/" + rating.getMovieId(), Movie.class);
                     return new CatalogItem(movie.getName(), "Test Description", rating.getRating());
